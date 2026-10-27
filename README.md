@@ -45,53 +45,6 @@ The **webshop** is a real-world codebase used to demonstrate these features in p
 - A modern web browser and an internet connection.
 
 You do not need to install Node.js, Java, Gradle, or an editor on your own computer. Codespaces provides the browser-based VS Code environment.
-
-### Create your Codespace
-
-1. Open the workshop repository on GitHub.
-2. Select **Code** → **Codespaces** → **Create codespace on main**.
-3. Wait for the Codespace to finish starting, then open a terminal in the Codespace.
-
-Before starting the workshop, confirm the required runtimes are available:
-
-```bash
-node --version
-java --version
-```
-
-Node.js should be version 24 or later, and Java should report version 25. If either check fails, or Codespaces is unavailable for your account, ask the workshop facilitator for help before proceeding.
-
-### Start the webshop
-
-Use two terminals in the Codespace. In the first terminal, start the backend:
-
-```bash
-cd backend
-./gradlew bootRun
-```
-
-In a second terminal, start the frontend:
-
-```bash
-cd frontend
-npm install
-npm run dev -- --host 0.0.0.0
-```
-
-The first backend startup may take a few minutes while Gradle downloads dependencies.
-
-### Verify everything is ready
-
-Wait for the backend log to report that `WebshopApplication` has started and for Vite to report that it is ready. Then, in another terminal, check the API:
-
-```bash
-curl -fsS http://localhost:8080/api/products
-```
-
-The command should return a JSON array of products. In the Codespace's **Ports** tab, find port **5173** and select **Open in Browser**; the webshop frontend should load. The address that opens is your `<frontend-codespace-url>`. Use the **Ports** tab to find the forwarded address for any other port you need, such as **8080** for backend pages; do not type `localhost` URLs into your browser. Continue to Part 01 only after the API check succeeds and the frontend page opens. If either check fails, share the terminal error with the facilitator before continuing.
-
-For more setup details, see [Part 00 — Prerequisites](docs/workshop/00-prerequisites.md).
-
 ---
 
 ## Workshop Guide
@@ -103,25 +56,6 @@ For more setup details, see [Part 00 — Prerequisites](docs/workshop/00-prerequ
 | 02 | Complete the Backend | 20 min | [→](docs/workshop/02-complete-the-backend.md) |
 | 03 | Wire the Frontend | 20 min | [→](docs/workshop/03-wire-the-frontend.md) |
 | 04 | Security Review Agents | 15 min | [→](docs/workshop/04-agents-and-skills.md) |
-
-### Bonus Tasks (self-paced)
-
-| Bonus | Topic | Link |
-|-------|-------|------|
-| 01 | Security testing agent with browser automation | [→](docs/workshop/04-agents-and-skills.md) |
-
----
-
-## Architecture
-
-```
-browser
-  └── frontend/          Vite + React + TypeScript  :5173
-        └── fetch
-              └── backend/   Kotlin + Spring Boot    :8080
-                    └── JPA
-                          └── H2 (in-memory)
-```
 
 ### What's given vs. what participants build
 
