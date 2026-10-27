@@ -4,193 +4,74 @@
 
 ---
 
-## Tools you need
+## Before you start
 
-| Tool | Version | Download |
-|------|---------|----------|
-| Node.js | 24 (latest LTS) | https://nodejs.org |
-| JDK | 25 (latest LTS) | https://adoptium.net |
-| Gradle | 9.7.1 (latest) | https://gradle.org/install |
-| VS Code **or** IntelliJ IDEA | Latest | See below |
-| GitHub account with Copilot access | — | https://github.com/settings/copilot |
+The workshop runs in GitHub Codespaces, so you do not need to install Node.js, Java, Gradle, or an editor on your computer.
 
-> **Note:** The backend project uses the **Gradle Wrapper** (`gradlew` / `gradlew.bat`), so you normally don't need Gradle installed globally to *run* the project. Installing it yourself is still useful for troubleshooting, regenerating the wrapper, or running `gradle` commands directly — follow the section below if you hit wrapper issues.
+You will need:
+- A GitHub account with permission to use Codespaces and available Codespaces quota or billing.
+- GitHub Copilot access for the Copilot activities.
+- A modern web browser and an internet connection.
 
-Each section below has a **Windows** and a **macOS** tab. Follow the one that matches your machine.
+## Create your Codespace
 
-### 1. Node.js 24 (latest LTS)
+1. Open [acn-ca/copilot-ws](https://github.com/acn-ca/copilot-ws) on GitHub and select **Fork** to create a copy in your account.
+2. Open your fork, select **Code** → **Codespaces** → **Create codespace on main**.
+3. Wait for the Codespace to finish starting, then open a terminal.
 
-**Windows**
-```powershell
-winget install OpenJS.NodeJS.LTS
-```
-Or download the installer from https://nodejs.org and run it.
+Check that the required runtimes are available:
 
-**macOS**
 ```bash
-brew install node@24
-brew link --overwrite node@24
-```
-Or download the installer from https://nodejs.org.
-
-Verify with:
-```bash
-node -v   # should print v24.x or higher
-npm -v
+node --version
+java --version
 ```
 
-### 2. JDK 25 (latest LTS)
+Node.js should be version 24 or later, and Java should report version 25. If either check fails or you cannot create a Codespace, ask the workshop facilitator for help before proceeding.
 
-**Windows**
-```powershell
-winget install EclipseAdoptium.Temurin.25.JDK
-```
-Then set `JAVA_HOME` if it isn't set automatically:
-```powershell
-setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\jdk-25"
-```
-(Reopen your terminal after `setx`.)
+## Start the webshop
 
-**macOS**
-```bash
-brew install --cask temurin@25
-```
-Then point `JAVA_HOME` at it (add to `~/.zshrc` or `~/.bash_profile`):
-```bash
-export JAVA_HOME=$(/usr/libexec/java_home -v 25)
-```
+Open two terminals in the Codespace. In the first terminal, start the backend:
 
-Verify with:
-```bash
-java -version   # should print 25.x
-```
-
-### 3. Gradle 9.7.1 (latest)
-
-You only need this if you want the `gradle` command available globally (e.g. to regenerate the wrapper or debug build issues). The workshop itself uses the wrapper committed in `backend/gradlew`.
-
-**Windows**
-```powershell
-choco install gradle
-```
-Or via [SDKMAN for Windows/WSL](https://sdkman.io/):
-```bash
-sdk install gradle 9.7.1
-```
-
-**macOS**
-```bash
-brew install gradle
-```
-Or via [SDKMAN](https://sdkman.io/):
-```bash
-sdk install gradle 9.7.1
-```
-
-Verify with:
-```bash
-gradle -v   # should show Gradle 9.7.1 and JVM 25
-```
-
-> **Troubleshooting the wrapper:** If `./gradlew` fails with something like *"'gradle' is not recognized"* or *"cannot find gradle-wrapper.jar"*, the wrapper files are missing or broken. Once you have Gradle installed globally, regenerate them from the `backend/` folder:
-> ```bash
-> gradle wrapper --gradle-version 9.7.1
-> ```
-> This creates/updates `gradlew`, `gradlew.bat`, and `gradle/wrapper/gradle-wrapper.{jar,properties}`. Commit all four files.
-
-### 4. VS Code or IntelliJ IDEA
-
-**VS Code — Windows & macOS**
-
-Install from https://code.visualstudio.com, then install the **GitHub Copilot** extension from the marketplace:
-```
-ext install GitHub.copilot
-```
-Also install **GitHub Copilot Chat** if it doesn't come bundled.
-
-**IntelliJ IDEA — Windows & macOS**
-
-Install from https://www.jetbrains.com/idea/, then install the **GitHub Copilot** plugin via *Settings → Plugins → Marketplace*.
-
----
-
-## Verify your Copilot access
-
-Open VS Code (or IntelliJ) and look for the Copilot icon in the status bar (bottom right).  
-It should show a ✅ or your GitHub avatar — not a ⚠️ or ✖️.
-
-If it shows an error, sign in via *GitHub Copilot: Sign In* from the command palette.
-
----
-
-## Fork and clone the repo
-
-### 1. Fork the repo
-
-Go to **https://github.com/Ivarafa/copilot-ws** and click **Fork** (top-right corner). This creates your own copy where you can push changes.
-
-### 2. Clone your fork
-
-**Windows (PowerShell)**
-```powershell
-git clone https://github.com/your-username/copilot-ws.git
-cd copilot-ws
-```
-
-**macOS (Terminal)**
-```bash
-git clone https://github.com/your-username/copilot-ws.git
-cd copilot-ws
-```
-
-### 3. Start both the frontend and backend
-
-**Frontend — Windows & macOS**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-→ Opens at **http://localhost:5173**
-
-**Backend — Windows**
-```powershell
-cd backend
-.\gradlew.bat bootRun
-```
-
-**Backend — macOS**
 ```bash
 cd backend
 ./gradlew bootRun
 ```
-→ API available at **http://localhost:8080/api**
-→ H2 console at **http://localhost:8080/h2-console**
 
-> **H2 console settings:** JDBC URL `jdbc:h2:mem:webshopdb`, User `sa`, Password *(empty)*
+In the second terminal, start the frontend:
 
-> **First run is slower:** the wrapper downloads Gradle 9.7.1 automatically the first time you run `gradlew`. This needs an internet connection and can take a minute or two.
+```bash
+cd frontend
+npm install
+npm run dev -- --host 0.0.0.0
+```
+
+The first backend startup may take a few minutes while the Gradle Wrapper downloads Gradle and the project dependencies.
+
+## Verify the setup
+
+Wait for the backend log to report that `WebshopApplication` has started and for Vite to report that it is ready. In a third terminal, run:
+
+```bash
+curl -fsS http://localhost:8080/api/products
+```
+
+The command should return a JSON array of products. Next, open the Codespace's **Ports** tab and open port **5173**. The webshop frontend should load in your browser.
+
+Finally, open Copilot Chat in the Codespace and ask, `Explain this project in one sentence.` Confirm that Copilot responds. If you are asked to sign in or do not have Copilot access, ask the workshop facilitator for help.
+
+Continue to Part 01 only after the API, frontend, and Copilot checks succeed. If a check fails, share the terminal error with the facilitator before continuing.
+
+> **Note:** The backend uses the Gradle Wrapper, so you do not need a global Gradle installation.
 
 ---
 
 ## Troubleshooting
 
-| Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| `'gradle' is not recognized` / `'java' is not recognized` | Tool not installed or not on `PATH` | Reinstall via the steps above and open a **new** terminal window |
-| `./gradlew` fails immediately with no useful error | Wrapper files missing/corrupted (`gradle/wrapper/gradle-wrapper.jar`) | Run `gradle wrapper --gradle-version 9.7.1` from `backend/` with Gradle installed globally, then commit the regenerated files |
-| Build fails with a Java version error (e.g. "Unsupported class file major version") | Wrong `JAVA_HOME` or multiple JDKs installed | Confirm `java -version` reports 25, and that `JAVA_HOME` points to the JDK 25 install |
-| `npm install` fails with engine warnings | Node.js version too old | Confirm `node -v` reports 24 or higher |
-| Port `5173` or `8080` already in use | Another process is using the port | Stop the other process, or change the port in `vite.config.ts` / `application.yml` |
+| Symptom | What to check |
+|---------|---------------|
+| Node.js is older than 24 or Java is not version 25 | Stop and ask the facilitator for help with the Codespace environment. |
+| `curl` cannot connect to port 8080 | Check that `./gradlew bootRun` is still running and that the backend startup completed. |
+| Port 5173 is missing or the page does not load | Check that Vite is still running with `--host 0.0.0.0`, then reopen port 5173 from the **Ports** tab. |
+| Gradle is still downloading dependencies | Wait for the first startup to finish; it can take a few minutes. |
 
----
-
-## Expected result
-
-| URL | What you should see |
-|-----|---------------------|
-| http://localhost:5173 | Frontend shell — "No products loaded yet" |
-| http://localhost:8080/api/products | JSON array of 10 products |
-| http://localhost:8080/h2-console | H2 database browser |
-
-If both are running — you're ready! Head to [Part 1 →](./01-copilot-instructions.md)
+When the API returns products and the frontend opens, you're ready! Head to [Part 1 →](./01-copilot-instructions.md).
