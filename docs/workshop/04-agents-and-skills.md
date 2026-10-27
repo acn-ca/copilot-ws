@@ -5,20 +5,22 @@
 
 **Learning goals:**
 - Understand how the built-in code review agent can help identify security issues
-- Build a custom security reviewer agent and add a helper skill with security guidance
+- Create a security reviewer agent and compare your own skill with an organizer-provided skill
 - Observe how pre-configured environments enable complex automation
 
 > **Note:** This part demonstrates security-focused Copilot workflows using custom agents, reusable skills, and pre-configured environments.
+
+> **New to AI or coding tools?** No previous experience is needed. You can paste the example requests into Copilot Chat, ask it to explain unfamiliar terms, and review its suggestions before applying them. The goal is to experiment and leave with a useful deliverable, not to write everything from scratch.
 
 ---
 
 ## 🔍 1. Built-in Review Agent & Custom Agents
 
-Let's explore **Agents** — specialized AI personas equipped with instructions, tools, and multi-step processes.
+Let's explore **agents** and **skills**. An agent is a helper configured for a particular task; a skill gives Copilot reusable guidance it can apply while doing that task.
 
 > 💡 **Skills vs. Agents:**
-> - **Skills** (`.github/skills/`): Reusable security expertise. They teach Copilot *what* security context, checks, and guidance to apply.
-> - **Agents** (`.github/agents/`): Specialized workflow runners. They give Copilot tools and multi-step procedures to review code for security issues.
+> - **Skills** (`.github/skills/`): Reusable security guidance that Copilot can apply to a task.
+> - **Agents** (`.github/agents/`): Helpers configured to follow a workflow, such as reviewing code for security issues.
 
 ### Built-in Code Review Agent
 
@@ -45,31 +47,38 @@ The **code review agent** analyses your staged or unstaged changes and surfaces 
 
 The built-in agent provides a general review. A custom security reviewer can apply a focused checklist tailored to your repository.
 
-You can define **Custom Agents** in `.github/agents/name.agent.md`.
+Custom agents are described in files under `.github/agents/`. You can ask Copilot to help create one rather than writing the file yourself.
 
 #### How custom agents work
 
-Each agent file contains:
-- **YAML Frontmatter:** Configures the agent name, description, and available tools (`codebase`, `terminal`, etc.)
-- **System Instructions:** Defines the agent's specific role, checklist, prioritization rules, and output format.
+An agent file includes basic settings, such as its name and tools, followed by instructions that describe its role and workflow. You can ask Copilot to explain or draft either part.
 
 **Try it:**
 
-1. Create `.github/agents/security-reviewer.agent.md`.
-2. Give the agent a security review role and a checklist relevant to this webshop, such as authorization, input validation, sensitive data exposure, and dependency risks.
-3. Ask the agent to review your changes and report actionable findings with affected files and severity.
+1. For inspiration, open the existing `.github/agents/todo.agent.md` and notice how it describes the agent's role and steps. You can use its structure without copying its TODO-focused task.
+2. In Copilot Chat, type `/create-agent` and ask for a security reviewer for this webshop. For example:
+   ```
+   /create-agent Create a security reviewer for this webshop. Check authorization, input validation, sensitive data exposure, and dependency risks. Explain your choices as you go.
+   ```
+3. Review Copilot's draft, ask questions about anything unfamiliar, and save the agent under `.github/agents/`.
+4. Ask the agent to review a small set of changes and create a `security-review-report.md` with findings, severity, affected files, and recommended next steps.
 
-### Add a Helper Skill — `.github/skills/`
+### Create and Compare a Helper Skill — `.github/skills/`
 
-Keep reusable security review guidance separate from the agent workflow so it can be shared and improved independently.
+First, create and try your own security skill. Then the organizers will provide a pre-written gold-standard skill. Run both skills against the same code and prompt, and compare the results.
 
 **Try it:**
 
-1. Create `.github/skills/security-review/SKILL.md`.
-2. Add concise security review guidance for the webshop, including the checks and reporting expectations you want Copilot to follow.
-3. Update the security reviewer agent instructions to use this skill when reviewing code.
+1. In Copilot Chat, type `/create-skill` and describe the security guidance you want Copilot to reuse. For example:
+   ```
+   /create-skill Create a skill for reviewing this webshop for security issues. Include a short checklist and a clear format for reporting findings. Explain the steps for a beginner.
+   ```
+2. Review the draft, ask Copilot to explain it, and save your skill under `.github/skills/`.
+3. Ask your security reviewer agent to use your skill to produce a `security-review-report.md`.
+4. Get the pre-written gold-standard skill from the organizers and add it as a separate skill. Follow the organizers' instructions for where to save it.
+5. Use the same review prompt and code with the gold-standard skill. Compare the two reports: which findings, explanations, or recommendations changed? You can also ask Copilot to create a small comparison dashboard or summary table.
 
-> 💡 **SDLC role:** The security reviewer acts as a focused **Application Security Engineer**, while the helper skill keeps the team's review guidance reusable.
+> 💡 **SDLC role:** The security reviewer acts as a focused **Application Security Engineer**. The report and skill comparison make the agent's work visible and give you something concrete to discuss.
 
 #### Agent Plugins & Extension Marketplaces
 
