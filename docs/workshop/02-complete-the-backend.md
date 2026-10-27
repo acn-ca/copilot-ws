@@ -128,7 +128,7 @@ Implement createOrder: look up each product, reduce stock, create an Order with 
 ## Step 6 — Verify in H2 console
 
 1. Make sure the backend is running (`./gradlew bootRun`)
-2. In the Codespaces **Ports** tab, find port **8080** and copy or open its forwarded address. Open `<backend-codespace-url>/h2-console` in your browser, replacing the placeholder with that address.
+2. In the Codespaces **Ports** tab, find port **8080** and copy or open its forwarded address. Open `<backend-codespace-url>/h2-console/` in your browser, replacing the placeholder with that address.
 3. JDBC URL: `jdbc:h2:mem:webshopdb`, User: `sa`, Password: *(empty)*
 4. Run: `SELECT * FROM PRODUCT;` — you should see 10 rows
 5. Use `curl` in the Codespaces terminal or open `<backend-codespace-url>/api/products` in your browser to test. Replace the placeholder with the forwarded address for port **8080**.
