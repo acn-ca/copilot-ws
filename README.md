@@ -75,7 +75,7 @@ In a second terminal, start the frontend:
 ```bash
 cd frontend
 npm install
-npm run dev -- --host 0.0.0.0
+npm run dev
 ```
 
 The first backend startup may take a few minutes while Gradle downloads dependencies.
