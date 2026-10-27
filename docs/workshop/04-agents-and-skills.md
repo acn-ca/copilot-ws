@@ -1,84 +1,24 @@
-# 04 — Custom Prompts, Agents & MCP
+# 04 — Security Review Agents & MCP
 
 **Time:** ~15 minutes  
-**Features:** Custom prompts, Code review agent, Custom agents (`.github/agents/`), Playwright MCP, environment setup
+**Features:** Code review agent, security reviewer agent (`.github/agents/`), helper skills (`.github/skills/`), environment setup
 
 **Learning goals:**
-- Learn how to turn inline prompts into version-controlled `.github/prompts/*.prompt.md` files
-- Understand built-in review agents and how to build custom agents in `.github/agents/*.agent.md`
-- See how MCP servers connect Copilot to external tools (browser, databases, APIs)
+- Understand how the built-in code review agent can help identify security issues
+- Build a custom security reviewer agent and add a helper skill with security guidance
 - Observe how pre-configured environments enable complex automation
 
-> **Note:** This part demonstrates higher-level Copilot automation patterns — moving from reusable prompt templates to autonomous custom agents, external MCP tools, and pre-configured environments.
+> **Note:** This part demonstrates security-focused Copilot workflows using custom agents, reusable skills, and pre-configured environments.
 
 ---
 
-## 📝 1. Creating Reusable Prompts
+## 🔍 1. Built-in Review Agent & Custom Agents
 
-You've used detailed prompts in Parts 02 and 03:
-- Backend test generation prompt (Part 02, Step 7)
-- Component review prompt (Part 03, Step 7)
-
-**The problem:** Every time you need these, you copy and paste them from your notes or previous chat history.
-
-**The solution:** Save them as reusable prompt templates in `.github/prompts/*.prompt.md`.
-
-### Example: Convert an inline prompt to reusable
-
-**Before (copy/paste every time):**
-```
-@backend-engineer Generate a test for POST /api/orders using MockMvc that:
-[... full prompt text ...]
-```
-
-**After (saved as `.github/prompts/test-backend-api.prompt.md`):**
-```
-/test-backend-api generate a test for POST /api/orders
-```
-*(or use natural language: "Use the test-backend-api prompt...")*
-
-**Try it:**
-
-1. Open the starter file: `.github/prompts/test-backend-api.prompt.md`
-2. Replace the TODO sections with the useful parts of the backend testing prompt from Part 02:
-   ```markdown
-   ---
-   name: test-backend-api
-   description: Generate backend API tests with MockMvc
-   ---
-   
-   @backend-engineer Generate a test for [ENDPOINT] using MockMvc.
-   ```
-
-   Adapt the wording and add the guidelines you found most useful. The goal is to encode your own conventions, not copy a finished answer.
-
-3. In Copilot Chat, type `/test-backend-api` at the beginning of your message:
-   ```
-   /test-backend-api generate a test for DELETE /api/products/{id}
-   ```
-   *(You can also use natural language: `Use the test-backend-api prompt to generate a test for...`)*
-
-Copilot will load the prompt file and use it as a template. You can complete the `component-review.prompt.md` starter in the same way using `/component-review` or the review prompt from Part 03.
-
-> 💡 **What this teaches:** Prompts can be version-controlled, shared with your team, and evolved over time. It's a way to codify your QA and coding standards.
-
-### Your prompts as team conventions
-
-Other reusable prompts you might create:
-- **Design validation:** Review components against the designer skill + color palette
-- **Security audit:** Check code for common vulnerabilities
-- **Performance review:** Identify N+1 queries, memory leaks, expensive renders
-- **Accessibility check:** Validate WCAG compliance
-
----
-
-## 🔍 2. Built-in Review Agent & Custom Agents
-
-Now that you've structured your prompts into templates, let's explore **Agents** — specialized AI personas equipped with instructions, tools, and multi-step processes.
+Let's explore **Agents** — specialized AI personas equipped with instructions, tools, and multi-step processes.
 
 > 💡 **Skills vs. Agents:**
-> - **Skills** (`.github/skills/`): Reusable **domain expertise** (e.g., `backend-engineer`, `designer`). They teach Copilot *what* context, conventions, and patterns to follow when generating code.
-> - **Agents** (`.github/agents/`): Autonomous **workflow runners** (e.g., `@todo`, `@code-review`). They give Copilot tools (`codebase`, `terminal`) and multi-step procedures to execute complete tasks.
+> - **Skills** (`.github/skills/`): Reusable security expertise. They teach Copilot *what* security context, checks, and guidance to apply.
+> - **Agents** (`.github/agents/`): Specialized workflow runners. They give Copilot tools and multi-step procedures to review code for security issues.
 
 ### Built-in Code Review Agent
 
@@ -101,9 +41,9 @@ The **code review agent** analyses your staged or unstaged changes and surfaces 
 
 ---
 
-### Segway: Build Your Own Custom Agents — `.github/agents/`
+### Build a Custom Security Reviewer — `.github/agents/`
 
-Built-in agents handle general tasks like code review, but what if your team needs a **specialized reviewer or implementation agent** tailored to your repository?
+The built-in agent provides a general review. A custom security reviewer can apply a focused checklist tailored to your repository.
 
 You can define **Custom Agents** in `.github/agents/name.agent.md`.
 
@@ -113,68 +53,31 @@ Each agent file contains:
 - **YAML Frontmatter:** Configures the agent name, description, and available tools (`codebase`, `terminal`, etc.)
 - **System Instructions:** Defines the agent's specific role, checklist, prioritization rules, and output format.
 
-#### Example: The `@todo` implementation agent
+**Try it:**
 
-Open `.github/agents/todo.agent.md` in your editor. Notice how it defines:
-- **Frontmatter:** `name: todo`, `description: ...`, `tools: [codebase]`
-- **Step-by-step workflow:** Discovers TODO comments, reports status, prioritizes stubs by dependency, and implements solutions adhering to backend and frontend conventions.
+1. Create `.github/agents/security-reviewer.agent.md`.
+2. Give the agent a security review role and a checklist relevant to this webshop, such as authorization, input validation, sensitive data exposure, and dependency risks.
+3. Ask the agent to review your changes and report actionable findings with affected files and severity.
 
-**Try it in Copilot Chat:**
-```
-@todo Find all unimplemented stubs in this project and show me the status report.
-```
+### Add a Helper Skill — `.github/skills/`
 
-#### Creating a Custom Reviewer Agent
-
-Just like the `@todo` agent, you can create custom reviewer agents for your team:
-- `security-reviewer.agent.md` — Audits authentication, SQL injection, and secret leaks
-- `a11y-reviewer.agent.md` — Audits WCAG compliance and keyboard navigation
-- `performance-reviewer.agent.md` — Checks for N+1 queries and unnecessary re-renders
-
-> 💡 **SDLC role:** Custom agents act as automated **Tech Leads, QA Engineers, and Domain Experts** — encoding your team's exact procedures into reusable agents.
-
-#### Agent Plugins & Extension Marketplaces
-
-Beyond building custom agents and skills in your repository, you can also explore **Agent Plugins** and extension marketplaces. These marketplaces offer downloadable, pre-packaged bundles of agents, skills, tools, and instructions tailored for specific tech stacks (such as Spring Boot, React, Azure, or Docker) and workflows (such as security auditing or API testing). Installing preset bundles allows teams to instantly equip Copilot with standardized domain expertise and capabilities across projects without having to author every agent or instruction from scratch.
-
----
-
-## 🎭 3. Playwright MCP — Browser Automation from Chat
-
-Beyond prompt templates and agents, Copilot can interact with external tools using the **Model Context Protocol (MCP)**.
-
-The Playwright MCP server (pre-configured in `.mcp.json`) lets Copilot control a browser, take screenshots, interact with the UI, and validate user flows — all from chat.
+Keep reusable security review guidance separate from the agent workflow so it can be shared and improved independently.
 
 **Try it:**
 
-1. Make sure both frontend and backend are running (see [Part 00](./00-prerequisites.md))
-2. Verify MCP is connected (look for a 🔌 or server icon in Copilot Chat sidebar)
-3. Ask Copilot:
-   ```
-   Open the webshop at http://localhost:5173, take a screenshot, and describe what you see.
-   ```
+1. Create `.github/skills/security-review/SKILL.md`.
+2. Add concise security review guidance for the webshop, including the checks and reporting expectations you want Copilot to follow.
+3. Update the security reviewer agent instructions to use this skill when reviewing code.
 
-Copilot will:
-- Launch a browser instance
-- Navigate to the URL
-- Capture a screenshot
-- Describe the current state of the application
+> 💡 **SDLC role:** The security reviewer acts as a focused **Application Security Engineer**, while the helper skill keeps the team's review guidance reusable.
 
-**Next, test a user flow:**
-```
-Navigate to http://localhost:5173, click "Browse Products", take a screenshot, then add the first product to the cart. Show me the cart state.
-```
+#### Agent Plugins & Extension Marketplaces
 
-**Validate the checkout flow:**
-```
-Add a product to the cart, navigate to checkout, fill in the form with name "Test User" and email "test@example.com", submit the order, and confirm the order was created successfully by checking the backend.
-```
-
-> 💡 **SDLC role:** This is a **QA Engineer / Product Owner** tool — automated end-to-end testing from natural language, catching regressions before they reach users.
+Beyond building custom agents and skills in your repository, you can also explore **Agent Plugins** and extension marketplaces. These marketplaces offer downloadable, pre-packaged bundles of agents, skills, tools, and instructions for workflows such as security auditing. Installing a suitable bundle can provide reusable security guidance without authoring every agent or skill from scratch.
 
 ---
 
-## ⚙️ 4. Environment Setup — `copilot-setup-steps.yml`
+## ⚙️ 2. Environment Setup — `copilot-setup-steps.yml`
 
 Open `.github/copilot-setup-steps.yml` — this file pre-installs dependencies needed for testing and browser automation when agents run in automated or cloud environments.
 
@@ -193,7 +96,22 @@ Or ask:
 Add a step to copilot-setup-steps.yml that installs Playwright system dependencies for headless testing.
 ```
 
-> 💡 **SDLC role:** This is a **DevOps / QA** tool — ensuring the test environment is ready, just like a CI machine setup.
+> 💡 **SDLC role:** This is a **DevOps / Security QA** tool — ensuring the test environment is ready for repeatable security checks, just like a CI machine setup.
+
+---
+
+## 🎭 Bonus — Create a Security Testing Agent with Playwright MCP
+
+Copilot can use external tools through the **Model Context Protocol (MCP)**. The Playwright MCP server (pre-configured in `.mcp.json`) lets an agent interact with the webshop in a browser and check security-relevant user flows.
+
+**Try it:**
+
+1. Make sure both frontend and backend are running (see [Part 00](./00-prerequisites.md)).
+2. Verify the Playwright MCP server is connected in Copilot Chat.
+3. Create a `security-testing.agent.md` agent that uses the Playwright MCP tools to exercise security-relevant flows, such as form validation, access boundaries, and whether sensitive data appears in the UI.
+4. Ask the agent to test the webshop at `http://localhost:5173` and report reproducible findings without changing application data beyond the test flow.
+
+> 💡 **SDLC role:** This is a **Security QA Engineer** workflow — using browser automation to check security behavior through the same interface customers use.
 
 ---
 
@@ -201,10 +119,10 @@ Add a step to copilot-setup-steps.yml that installs Playwright system dependenci
 
 | Feature | Who benefits most | What it replaces |
 |---------|-------------------|------------------|
-| Custom prompts (`.github/prompts/`) | Developers, QA | Copy/pasting prompt snippets from notes |
-| Code review & Custom agents (`.github/agents/`) | Tech Lead, QA | Manual PR review & ad-hoc workflow scripts |
-| Playwright MCP (`.mcp.json`) | QA, Product Owner | Manual testing, end-to-end validation |
-| `copilot-setup-steps.yml` | DevOps, QA | Manual test environment setup |
+| Code review & security reviewer agent (`.github/agents/`) | Developers, Application Security | General review without a focused security checklist |
+| Security helper skill (`.github/skills/`) | Application Security, Developers | Repeating security guidance across reviews |
+| Playwright security testing agent (`.mcp.json`, bonus) | Security QA | Manual browser checks of security-relevant flows |
+| `copilot-setup-steps.yml` | DevOps, Security QA | Manual test environment setup |
 
 ---
 
