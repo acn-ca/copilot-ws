@@ -67,16 +67,13 @@ cd backend
 | 01 | Copilot Instructions | 20 min | [→](docs/workshop/01-copilot-instructions.md) |
 | 02 | Complete the Backend | 20 min | [→](docs/workshop/02-complete-the-backend.md) |
 | 03 | Wire the Frontend | 20 min | [→](docs/workshop/03-wire-the-frontend.md) |
-| 04 | Custom Prompts, Agents & MCP | 15 min | [→](docs/workshop/04-agents-and-skills.md) |
+| 04 | Security Review Agents & MCP | 15 min | [→](docs/workshop/04-agents-and-skills.md) |
 
 ### Bonus Tasks (self-paced)
 
 | Bonus | Topic | Link |
 |-------|-------|------|
-| 01 | MCP Servers deep dive | [→](docs/workshop/BONUS-01-mcp-servers.md) |
-| 02 | Testing with `/tests` | [→](docs/workshop/BONUS-02-testing.md) |
-| 03 | CI/CD with GitHub Actions | [→](docs/workshop/BONUS-03-ci-cd.md) |
-| 04 | Custom Instructions advanced | [→](docs/workshop/BONUS-04-custom-instructions.md) |
+| 01 | Security testing agent with Playwright MCP | [→](docs/workshop/04-agents-and-skills.md) |
 
 ---
 
