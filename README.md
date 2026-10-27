@@ -88,7 +88,7 @@ Wait for the backend log to report that `WebshopApplication` has started and for
 curl -fsS http://localhost:8080/api/products
 ```
 
-The command should return a JSON array of products. In the Codespace's **Ports** tab, open port **5173**; the webshop frontend should load in your browser. Continue to Part 01 only after the API check succeeds and the frontend page opens. If either check fails, share the terminal error with the facilitator before continuing.
+The command should return a JSON array of products. In the Codespace's **Ports** tab, find port **5173** and select **Open in Browser**; the webshop frontend should load. The address that opens is your `<frontend-codespace-url>`. Use the **Ports** tab to find the forwarded address for any other port you need, such as **8080** for backend pages; do not type `localhost` URLs into your browser. Continue to Part 01 only after the API check succeeds and the frontend page opens. If either check fails, share the terminal error with the facilitator before continuing.
 
 For more setup details, see [Part 00 — Prerequisites](docs/workshop/00-prerequisites.md).
 

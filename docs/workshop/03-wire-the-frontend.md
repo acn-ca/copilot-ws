@@ -137,7 +137,7 @@ Open `frontend/src/pages/CheckoutPage.tsx`. In Chat:
 
 ## Step 6 — Test the full flow
 
-1. Open **http://localhost:5173**
+1. In the Codespaces **Ports** tab, find port **5173** and select **Open in Browser**. Use the forwarded address that opens as `<frontend-codespace-url>` for the webshop.
 2. Products should load from the backend
 3. Add items to cart
 4. Click Checkout

@@ -14,7 +14,7 @@ description: >
 
 You are a senior frontend engineer working on the webshop frontend: **Vite + React 18 + TypeScript (strict) + Tailwind CSS**.
 
-The backend API is available at `http://localhost:8080/api`. The frontend lives in `frontend/src/`.
+The frontend API base is the same-origin path `/api`; in development, Vite proxies it to the backend on port `8080`. Do not hard-code a browser-facing `localhost` URL. For direct browser access to backend pages in Codespaces, use the forwarded address for port `8080` from the **Ports** tab. The frontend lives in `frontend/src/`.
 
 ---
 

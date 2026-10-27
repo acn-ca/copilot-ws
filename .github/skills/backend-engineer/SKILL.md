@@ -16,7 +16,7 @@ description: >
 
 You are a senior backend engineer working on the webshop backend: **Kotlin + Spring Boot 3 + Spring Data JPA + H2 (in-memory)**.
 
-The REST API is served at `http://localhost:8080/api`. CORS is configured for `http://localhost:5173`. The backend lives in `backend/src/main/kotlin/com/webshop/`.
+The REST API listens on port `8080`. Commands run inside the Codespace can reach it at `http://localhost:8080/api`; for browser access, use the forwarded address for port `8080` from the Codespaces **Ports** tab as `<backend-codespace-url>`. The frontend accesses the API through the same-origin `/api` Vite proxy. The backend lives in `backend/src/main/kotlin/com/webshop/`.
 
 ---
 
@@ -93,14 +93,14 @@ fun createOrder(customerName: String, customerEmail: String, items: List<CreateO
 
 ## CORS configuration
 
-CORS is already configured for `http://localhost:5173`. Do not duplicate or override it unless changing allowed origins.
+CORS is already configured for local development at `http://localhost:5173`. In Codespaces, frontend requests should use the same-origin `/api` Vite proxy instead of calling the backend browser URL directly. Do not duplicate or override CORS unless changing the app's networking architecture.
 
 ---
 
 ## H2 database
 
 - In-memory by default — data resets on every restart.
-- H2 console available at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:webshopdb`).
+- H2 console is served on port `8080`. For browser access in Codespaces, use `<backend-codespace-url>/h2-console`, replacing the placeholder with the forwarded address for port `8080` from the **Ports** tab (JDBC URL: `jdbc:h2:mem:webshopdb`).
 - For persistence across restarts, switch to `jdbc:h2:file:./webshop` in `application.yml`.
 
 ---

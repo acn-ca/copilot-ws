@@ -1,6 +1,6 @@
 import type { CreateOrderRequest, Order, Product } from '../types'
 
-const BASE_URL = 'http://localhost:8080/api'
+const BASE_URL = '/api'
 
 export async function fetchProducts(): Promise<Product[]> {
   const response = await fetch(`${BASE_URL}/products`)

@@ -55,7 +55,9 @@ Wait for the backend log to report that `WebshopApplication` has started and for
 curl -fsS http://localhost:8080/api/products
 ```
 
-The command should return a JSON array of products. Next, open the Codespace's **Ports** tab and open port **5173**. The webshop frontend should load in your browser.
+The command should return a JSON array of products. In the Codespace's **Ports** tab, find port **5173** and select **Open in Browser**. The address that opens is your `<frontend-codespace-url>`; use it whenever a workshop step asks you to open the frontend. Codespaces assigns a forwarded address for each Codespace, so do not type a `localhost` URL into your browser.
+
+For backend pages, find port **8080** in the same **Ports** tab and use its forwarded address as `<backend-codespace-url>`.
 
 Finally, open Copilot Chat in the Codespace and ask, `Explain this project in one sentence.` Confirm that Copilot responds. If you are asked to sign in or do not have Copilot access, ask the workshop facilitator for help.
 
