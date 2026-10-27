@@ -75,7 +75,7 @@ First, create and try your own security skill. Then the organizers will provide 
    ```
 2. Review the draft, ask Copilot to explain it, and save your skill under `.github/skills/`.
 3. Ask your security reviewer agent to use your skill to produce a `security-review-report.md`.
-4. Get the pre-written gold-standard skill from the organizers and add it as a separate skill. Follow the organizers' instructions for where to save it.
+4. Get the pre-written gold-standard skill from `examples/` and add it as a separate skill. Move your own skill to `.aiignore` in the root folder of this project. 
 5. Use the same review prompt and code with the gold-standard skill. Compare the two reports: which findings, explanations, or recommendations changed? You can also ask Copilot to create a small comparison dashboard or summary table.
 
 > 💡 **SDLC role:** The security reviewer acts as a focused **Application Security Engineer**. The report and skill comparison make the agent's work visible and give you something concrete to discuss.
@@ -83,28 +83,5 @@ First, create and try your own security skill. Then the organizers will provide 
 #### Agent Plugins & Extension Marketplaces
 
 Beyond building custom agents and skills in your repository, you can also explore **Agent Plugins** and extension marketplaces. These marketplaces offer downloadable, pre-packaged bundles of agents, skills, tools, and instructions for workflows such as security auditing. Installing a suitable bundle can provide reusable security guidance without authoring every agent or skill from scratch.
-
----
-
-## ⚙️ 2. Environment Setup — `copilot-setup-steps.yml`
-
-Open `.github/copilot-setup-steps.yml` — this file pre-installs dependencies needed for testing and browser automation when agents run in automated or cloud environments.
-
-**Current setup includes:**
-- Node.js + npm (for frontend dependencies)
-- JDK 25 (for backend compilation)
-- Playwright browsers (for automated testing)
-
-**Try it in Copilot Chat:**
-```
-Explain what dependencies are installed in copilot-setup-steps.yml and why each one matters for this webshop project.
-```
-
-Or ask:
-```
-Add a step to copilot-setup-steps.yml that installs Playwright system dependencies for headless testing.
-```
-
-> 💡 **SDLC role:** This is a **DevOps / Security QA** tool — ensuring the test environment is ready for repeatable security checks, just like a CI machine setup.
 
 ---
